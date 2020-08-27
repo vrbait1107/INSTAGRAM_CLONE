@@ -15,8 +15,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const signupRouter = require("./routes/signup");
 const loginRouter = require("./routes/login");
+const postRouter = require("./routes/post");
 app.use(signupRouter);
 app.use(loginRouter);
+app.use(postRouter);
 
 mongoose.connection.on("connected", () => {
   console.log("Database is connected");

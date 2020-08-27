@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const { jwtSecret } = require("./keys");
 const checkValidUser = require("../middleware/checkValidUser");
 
-router.post("/login", checkValidUser, function (req, res, next) {
+router.post("/login", function (req, res, next) {
   let { username, password } = req.body;
 
   User.findOne({ username: username }, function (err, data) {
