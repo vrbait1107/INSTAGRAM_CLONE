@@ -1,11 +1,13 @@
 import React from "react";
-import Register from "./components/Register";
+import Profile from "./components/Profile";
 import "./App.scss";
+import NavBar from "./components/NavBar";
 
 function App() {
   return (
     <div>
-      <Register />
+      <NavBar />
+      <Profile />
     </div>
   );
 }

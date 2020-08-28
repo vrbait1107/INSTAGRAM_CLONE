@@ -37,7 +37,9 @@ const Register = () => {
               />
             </Form.Group>
 
-            <Button variant="primary">Register</Button>
+            <Button variant="primary" className="mx-auto">
+              Register
+            </Button>
           </Form>
         </Col>
       </Row>

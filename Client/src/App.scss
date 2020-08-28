@@ -3,6 +3,10 @@
   font-weight: bold;
 }
 
-.text-red {
-  color: red;
+@import url("https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap");
+
+.font-hotel {
+  font-family: "Grand Hotel", cursive;
+  color: black;
+  font-size: 40px !important;
 }
