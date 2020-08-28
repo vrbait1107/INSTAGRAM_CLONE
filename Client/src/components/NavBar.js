@@ -1,37 +1,40 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
     <Navbar bg="white" className="py-2 shadow" expand="lg">
-      <Navbar.Brand href="#home" className="font-hotel">
-        Instagram
+      <Navbar.Brand>
+        <Link className="font-hotel" to="/">
+          Instagram
+        </Link>
       </Navbar.Brand>
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
-          <Nav.Link
-            className="text-uppercase font-weight-bold text-dark"
-            href="#home"
+          <Link
+            className="text-uppercase mx-3 font-weight-bold text-dark"
+            to="/Login"
           >
             Log In
-          </Nav.Link>
+          </Link>
 
-          <Nav.Link
-            className="text-uppercase font-weight-bold text-dark"
-            href="#link"
+          <Link
+            className="text-uppercase  mx-3 font-weight-bold text-dark"
+            to="/Register"
           >
             Sign Up
-          </Nav.Link>
+          </Link>
 
-          <Nav.Link
-            className="text-uppercase font-weight-bold text-dark"
-            href="#link"
+          <Link
+            className="text-uppercase  mx-3 font-weight-bold text-dark"
+            to="/Profile"
           >
             Profile
-          </Nav.Link>
+          </Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
