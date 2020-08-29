@@ -16,6 +16,13 @@ const NavBar = () => {
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
           <Link
+            className="text-uppercase  mx-3 font-weight-bold text-dark"
+            to="/CreatePost"
+          >
+            Create Post
+          </Link>
+
+          <Link
             className="text-uppercase mx-3 font-weight-bold text-dark"
             to="/Login"
           >
