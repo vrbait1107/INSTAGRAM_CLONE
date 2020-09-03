@@ -1,3 +1,4 @@
+const User = require("../Model/User");
 const checkUsername = (req, res, next) => {
   let username = req.body.username;
 
