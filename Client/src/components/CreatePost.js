@@ -29,6 +29,8 @@ const CreatePost = () => {
       .then((data) => {
         console.log(data);
         alert(data);
+        setProgress(0);
+        document.getElementById("createPostForm").reset();
       })
       .catch((err) => {
         console.log(err);
@@ -44,7 +46,7 @@ const CreatePost = () => {
             <h3 className="text-uppercase font-time">Create Post</h3>
           </Card.Header>
 
-          <Form enctype="multipart/form-data">
+          <Form enctype="multipart/form-data" id="createPostForm">
             <Form.Group>
               <Form.Label>Title</Form.Label>
               <Form.Control
@@ -72,7 +74,11 @@ const CreatePost = () => {
 
             <ProgressBar progress={progress} />
 
-            <Button variant="primary" onClick={() => postData()}>
+            <Button
+              variant="primary"
+              className="mt-3"
+              onClick={() => postData()}
+            >
               Submit
             </Button>
           </Form>
