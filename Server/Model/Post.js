@@ -13,7 +13,7 @@ const Post = new Schema({
   },
   photo: {
     type: String,
-    default: "No Photo",
+    required: true,
   },
   postedBy: {
     type: ObjectId,

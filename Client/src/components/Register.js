@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  Container,
-  Card,
-  Row,
-  Col,
-  Form,
-  Button,
-  Alert,
-} from "react-bootstrap";
+import { Container, Card, Row, Col, Form, Button } from "react-bootstrap";
 import styles from "../scss/Form.module.scss";
 import axios from "axios";
 

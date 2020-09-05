@@ -6,13 +6,13 @@ const checkValidUser = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(401).json({ error: "You must logged in Man" });
+    return res.status(401).json({ error: "You must logged in" });
   }
 
   const token = authorization.replace("Bearer ", "");
   jwt.verify(token, jwtSecret, function (err, payload) {
     if (err) {
-      return res.status(401).json({ error: "You must logged in Man2" });
+      return res.status(401).json({ error: "You must logged in" });
     }
 
     const { _id } = payload;

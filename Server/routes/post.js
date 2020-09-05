@@ -2,22 +2,23 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../Model/Post");
 const checkValidUser = require("../middleware/checkValidUser");
+const upload = require("../middleware/multer");
 
-router.post("/createPost", checkValidUser, function (req, res, next) {
-  const { title, body } = req.body;
+router.post("/createPost", upload, function (req, res, next) {
+  const { title, body, file } = req.body;
 
-  if (!title || !body) {
+  const imagesName = req.file.filename;
+
+  if (!title || !body || !file) {
     return res.json({ error: "Please add all fields" });
   }
 
-  console.log(req.user);
-
-  req.user.password = undefined;
+  // req.user.password = undefined;
 
   let post = new Post({
     title,
     body,
-    postedBy: req.user,
+    photo: imageName,
   });
 
   post.save(function (err, data) {

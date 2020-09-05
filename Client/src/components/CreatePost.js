@@ -1,8 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import styles from "../scss/Form.module.scss";
+import ProgressBar from "./ProgressBar";
 
 const CreatePost = () => {
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [file, setFile] = useState("");
+  const [progress, setProgress] = useState(0);
+
+  const data = new FormData();
+  data.append("title", title);
+  data.append("body", body);
+  data.append("file", file);
+
+  const postData = (e) => {
+    axios({
+      url: "/createPost",
+      method: "post",
+      data: data,
+      onUploadProgress: (progressEvent) => {
+        const { loaded, total } = progressEvent;
+        let percent = Math.floor((loaded * 100) / total);
+        setProgress(percent);
+      },
+    })
+      .then((data) => {
+        console.log(data);
+        alert(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
+  };
+
   return (
     <Container>
       <Row className={styles.postForm}>
@@ -11,21 +44,38 @@ const CreatePost = () => {
             <h3 className="text-uppercase font-time">Create Post</h3>
           </Card.Header>
 
-          <Form.Group>
-            <Form.Label>Title</Form.Label>
-            <Form.Control type="text" placeholedr="Enter Title" />
-          </Form.Group>
+          <Form enctype="multipart/form-data">
+            <Form.Group>
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                type="text"
+                placeholedr="Enter Title"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group>
-            <Form.Label>Body</Form.Label>
-            <Form.Control type="text" placeholedr="Enter Body" />
-          </Form.Group>
+            <Form.Group>
+              <Form.Label>Body</Form.Label>
+              <Form.Control
+                type="text"
+                placeholedr="Enter Body"
+                onChange={(e) => setBody(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group>
-            <Form.File label="Select Image" />
-          </Form.Group>
+            <Form.Group>
+              <Form.File
+                label="Select Image"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </Form.Group>
 
-          <Button variant="primary">Submit</Button>
+            <ProgressBar progress={progress} />
+
+            <Button variant="primary" onClick={() => postData()}>
+              Submit
+            </Button>
+          </Form>
         </Col>
       </Row>
     </Container>
