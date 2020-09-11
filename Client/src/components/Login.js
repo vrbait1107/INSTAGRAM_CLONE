@@ -20,6 +20,7 @@ const Login = () => {
     })
       .then((data) => {
         console.log(data.data.token);
+        localStorage.setItem("jwt", data.data.token);
         console.log(data);
         alert("You are Successfully Login");
         document.getElementById("loginForm").reset();

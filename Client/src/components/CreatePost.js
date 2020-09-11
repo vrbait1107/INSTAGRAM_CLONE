@@ -19,6 +19,10 @@ const CreatePost = () => {
     axios({
       url: "/createPost",
       method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
       data: data,
       onUploadProgress: (progressEvent) => {
         const { loaded, total } = progressEvent;
@@ -28,7 +32,7 @@ const CreatePost = () => {
     })
       .then((data) => {
         console.log(data);
-        alert(data);
+        alert("Your Post Successfully Shared");
         setProgress(0);
         document.getElementById("createPostForm").reset();
       })
