@@ -7,7 +7,7 @@ import ProgressBar from "./ProgressBar";
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [file, setFile] = useState("");
+  const [file, setFile] = useState({});
   const [progress, setProgress] = useState(0);
 
   const data = new FormData();
@@ -37,6 +37,7 @@ const CreatePost = () => {
         document.getElementById("createPostForm").reset();
       })
       .catch((err) => {
+        document.getElementById("createPostForm").reset();
         console.log(err);
         alert(err);
       });
@@ -50,7 +51,7 @@ const CreatePost = () => {
             <h3 className="text-uppercase font-time">Create Post</h3>
           </Card.Header>
 
-          <Form enctype="multipart/form-data" id="createPostForm">
+          <Form id="createPostForm" encType="multipart/form-data">
             <Form.Group>
               <Form.Label>Title</Form.Label>
               <Form.Control
@@ -72,6 +73,7 @@ const CreatePost = () => {
             <Form.Group>
               <Form.File
                 label="Select Image"
+                name="file"
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </Form.Group>
