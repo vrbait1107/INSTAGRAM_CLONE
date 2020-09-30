@@ -1,21 +1,30 @@
 ## Instagram Clone
 
-1. This is Simple Instagram Clone using MongoDB, React, NodeJs & ExpressJs.
-2. Client Folder is Client
-3. Server Folder is Server
+- This is Simple Instagram Clone using MongoDB, React, NodeJs & ExpressJs (MERN).
+- Client Folder is Client
+- Server Folder is Server
 
 ## Dependencies
 
-1. Please Install dependencies for client and server in their respective folder using npm install command this will automatically install dependencies for this project.
-
-## Database
-
-1. We used Mongodb database, The details of database used in this project is given in database folder.
-
-## API
-
-1. To start Server just run command in Server folder nodemon app.js
+- Please Install dependencies for client and server in their respective folder using npm install command this will automatically install dependencies for this project.
 
 ## Client
 
-1. To start client run command in client folder npm start
+- To start client run command in client folder npm start
+
+## Server
+
+- To start Server just run command in Server folder nodemon app.js
+
+## License
+
+- Instagram Clone is [MIT LICENSE](./LICENSE).
+
+## Contributing Guide
+
+- Read our [Contributing Guide](./CONTRIBUTING.md) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to Instagram Clone.
+- Please feel free to contribute in this project as well as other project in this account.
+
+## Code of Conduct
+
+- Read [Code of Conduct](./CODE_OF_CONDUCT.md).
