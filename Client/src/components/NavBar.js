@@ -10,16 +10,22 @@ const NavBar = () => {
   const renderList = () => {
     if (state) {
       return [
-        <Link className="font-nav mx-3 text-dark" to="/CreatePost">
+        <Link
+          key="createPost"
+          className="font-nav mx-3 text-dark"
+          to="/CreatePost"
+        >
           Create Post
         </Link>,
 
-        <Link className="font-nav mx-3 text-dark" to="/Profile">
+        <Link key="profile" className="font-nav mx-3 text-dark" to="/Profile">
           Profile
         </Link>,
 
         <Button
+          key="logout"
           className="font-nav logout btn btn-danger"
+          style={{ fontSize: 22 }}
           onClick={() => {
             localStorage.clear();
             dispatch({ type: "CLEAR" });
@@ -30,11 +36,15 @@ const NavBar = () => {
       ];
     } else {
       return [
-        <Link className="font-nav mx-3 text-dark" to="/Login">
+        <Link key="login" className="font-nav mx-3 text-dark" to="/Login">
           Log In
         </Link>,
 
-        <Link className="font-nav  mx-3 text-dark" to="/Register">
+        <Link
+          key="register"
+          className="font-nav  mx-3 text-dark"
+          to="/Register"
+        >
           Sign Up
         </Link>,
       ];

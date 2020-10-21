@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
+import axios from "axios";
 
 const Profile = () => {
+  const [pics, setPics] = useState([]);
+  useEffect(() => {
+    axios({
+      url: "/myPosts",
+      method: "post",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    })
+      .then((data) => {
+        console.log(data.data);
+        setPics(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   return (
     <Container className="mt-5">
       <Row>
@@ -39,29 +58,18 @@ const Profile = () => {
       </Row>
 
       <Row className="mt-5">
-        <Col md={4}>
-          <img
-            src="https://images.pexels.com/photos/1909572/pexels-photo-1909572.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-            alt="My Gallery"
-            className="img-fluid"
-          />
-        </Col>
-
-        <Col md={4}>
-          <img
-            src="https://images.pexels.com/photos/1909572/pexels-photo-1909572.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-            alt="My Gallery"
-            className="img-fluid"
-          />
-        </Col>
-
-        <Col md={4}>
-          <img
-            src="https://images.pexels.com/photos/1909572/pexels-photo-1909572.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-            alt="My Gallery"
-            className="img-fluid"
-          />
-        </Col>
+        {pics.map((item) => {
+          return (
+            <Col md={4}>
+              <img
+                src={process.env.PUBLIC_URL + `/uploads/${item.photo}`}
+                alt={item._id}
+                style={{ height: 220 }}
+                className="img-fluid"
+              />
+            </Col>
+          );
+        })}
       </Row>
     </Container>
   );

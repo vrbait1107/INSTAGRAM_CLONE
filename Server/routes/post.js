@@ -39,4 +39,15 @@ router.post("/createPost", checkValidUser, upload, function (req, res, next) {
   });
 });
 
+router.post("/myPosts", checkValidUser, function (req, res, next) {
+  Post.find({ postedBy: req.user._id })
+    .populate("postedBy", "_id username")
+    .then((posts) => {
+      res.json(posts);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 module.exports = router;
