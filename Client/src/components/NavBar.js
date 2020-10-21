@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
-import { Navbar, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Navbar, Nav, Button } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
 import { UserContext } from "../App";
 
 const NavBar = () => {
+  const history = useHistory();
   const { state, dispatch } = useContext(UserContext);
 
   const renderList = () => {
@@ -16,6 +17,16 @@ const NavBar = () => {
         <Link className="font-nav mx-3 text-dark" to="/Profile">
           Profile
         </Link>,
+
+        <Button
+          className="font-nav logout btn btn-danger"
+          onClick={() => {
+            localStorage.clear();
+            dispatch({ type: "CLEAR" });
+          }}
+        >
+          Logout
+        </Button>,
       ];
     } else {
       return [
