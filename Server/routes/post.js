@@ -4,6 +4,17 @@ const Post = require("../Model/Post");
 const checkValidUser = require("../middleware/checkValidUser");
 const upload = require("../middleware/multer");
 
+router.post("/allPost", checkValidUser, function (req, res, next) {
+  Post.find({})
+    .populate("postedBy", "_id username")
+    .then((posts) => {
+      res.json(posts);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 router.post("/createPost", checkValidUser, upload, function (req, res, next) {
   const { title, body } = req.body;
 

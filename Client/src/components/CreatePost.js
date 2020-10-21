@@ -39,7 +39,6 @@ const CreatePost = () => {
       .catch((err) => {
         document.getElementById("createPostForm").reset();
         console.log(err);
-        alert(err);
       });
   };
 
