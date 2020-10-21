@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import styles from "../scss/Form.module.scss";
 import axios from "axios";
+import { UserContext } from "../App";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
+  const history = useHistory();
+  const { state, dispatch } = useContext(UserContext);
+
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -19,11 +24,15 @@ const Login = () => {
       },
     })
       .then((data) => {
-        console.log(data.data.token);
-        localStorage.setItem("jwt", data.data.token);
-        console.log(data);
-        alert("You are Successfully Login");
-        document.getElementById("loginForm").reset();
+        if (data.error) {
+          alert("Something Went Wrong");
+        } else {
+          document.getElementById("loginForm").reset();
+          localStorage.setItem("jwt", data.data.token);
+          localStorage.setItem("user", JSON.stringify(data.data.user));
+          dispatch({ type: "USER", payload: data.data.user });
+          history.push("/");
+        }
       })
       .catch((err) => {
         alert(err);

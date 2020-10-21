@@ -4,7 +4,6 @@ const User = require("../Model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { jwtSecret } = require("./keys");
-const checkValidUser = require("../middleware/checkValidUser");
 
 router.post("/login", function (req, res, next) {
   let { username, password } = req.body;
@@ -14,11 +13,11 @@ router.post("/login", function (req, res, next) {
 
     if (data) {
       let hashPassword = data.password;
+      const { _id, name, email } = data;
 
       if (bcrypt.compareSync(password, hashPassword)) {
-        // res.json({ success: "You are Successfully Logged In" });
         const token = jwt.sign({ _id: data._id }, jwtSecret);
-        res.json({ token });
+        res.json({ token, user: { _id, name, email } });
       } else {
         res.status(422).json({ error: "Check Your Credentials" });
       }

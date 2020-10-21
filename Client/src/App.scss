@@ -3,6 +3,7 @@
   font-weight: bold;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Staatliches&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap");
 
 .font-hotel {
@@ -11,6 +12,11 @@
   font-size: 40px !important;
 }
 
-a {
+.font-nav {
+  font-family: "Staatliches", cursive;
+}
+
+nav a {
   text-decoration: none !important;
+  font-size: 22px;
 }
