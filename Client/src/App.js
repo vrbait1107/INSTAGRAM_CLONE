@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useReducer, useEffect, useContext } from "react";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -6,22 +6,44 @@ import Home from "./components/Home";
 import "./App.scss";
 import NavBar from "./components/NavBar";
 import CreatePost from "./components/CreatePost";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useHistory } from "react-router-dom";
+import { reducer, intialState } from "./reducer/reducer";
 
-function App() {
+export const UserContext = createContext();
+
+const Routing = () => {
+  const history = useHistory();
+  const { state, dispatch } = useContext(UserContext);
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      history.push("/");
+    } else {
+      history.push("/Login");
+    }
+  }, []);
   return (
-    <BrowserRouter>
-      <NavBar />
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/Login" component={Login} />
-        <Route path="/Register" component={Register} />
-        <Route path="/Profile" component={Profile} />
-        <Route path="/CreatePost" component={CreatePost} />
-        <Profile />
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route path="/" exact component={Home} />
+      <Route path="/Login" component={Login} />
+      <Route path="/Register" component={Register} />
+      <Route path="/Profile" component={Profile} />
+      <Route path="/CreatePost" component={CreatePost} />
+      <Profile />
+    </Switch>
   );
-}
+};
+
+const App = () => {
+  const [state, dispatch] = useReducer(reducer, intialState);
+  return (
+    <UserContext.Provider value={{ state, dispatch }}>
+      <BrowserRouter>
+        <NavBar />
+        <Routing />
+      </BrowserRouter>
+    </UserContext.Provider>
+  );
+};
 
 export default App;

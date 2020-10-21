@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Container, Card, Row, Col, Form, Button } from "react-bootstrap";
 import styles from "../scss/Form.module.scss";
 import axios from "axios";
+import { UserContext } from "../App";
 
 const Register = () => {
+  const [state, dispatch] = useContext(UserContext);
   const [data, setData] = useState({
     username: "",
     name: "",
@@ -26,6 +28,7 @@ const Register = () => {
       .then((data) => {
         console.log(data);
         alert("Successful");
+        dispatch({ type: "USER", payload: data.user });
         document.getElementById("registerForm").reset();
       })
       .catch((err) => {
