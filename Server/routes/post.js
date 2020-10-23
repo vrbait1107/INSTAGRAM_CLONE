@@ -50,4 +50,20 @@ router.post("/myPosts", checkValidUser, function (req, res, next) {
     });
 });
 
+router.put("/likes", checkValidUser, function (req, res, next) {
+  Post.findByIdAndUpdate(
+    req.body.postId,
+    {
+      $push: { likes: req.user._id },
+    },
+    { new: true }
+  ).exec((err, data) => {
+    if (err) {
+      res.status(422).json({ error: err });
+    } else {
+      res.status(200).json({ result: data });
+    }
+  });
+});
+
 module.exports = router;
