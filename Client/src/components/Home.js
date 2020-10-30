@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import axios from "axios";
 
 const Home = () => {
   const [dataValue, setDataValue] = useState([]);
+
   useEffect(() => {
     axios({
       url: "/allPost",
@@ -20,6 +21,13 @@ const Home = () => {
         console.log(err);
       });
   }, []);
+
+  const makeComment = (value, id) => {
+    axios.post({
+      url: "/comment",
+      method: "post",
+    });
+  };
 
   return (
     <Container>
@@ -56,11 +64,15 @@ const Home = () => {
                     <a href="#">View All Comments</a>
                   </div>
 
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Add Comment"
-                  />
+                  <Form
+                    onSubmit={(e) => makeComment(e.target[0].value, item._id)}
+                  >
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Add Comment"
+                    />
+                  </Form>
                 </Card>
               </Col>
             );

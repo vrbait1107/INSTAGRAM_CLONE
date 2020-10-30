@@ -18,8 +18,6 @@ const User = new Schema({
     required: true,
   },
 
-  likes: [{ type: ObjectId, ref: "User" }],
-
   password: {
     type: String,
     required: true,

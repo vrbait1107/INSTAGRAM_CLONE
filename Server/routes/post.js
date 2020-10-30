@@ -4,6 +4,8 @@ const Post = require("../Model/Post");
 const checkValidUser = require("../middleware/checkValidUser");
 const upload = require("../middleware/multer");
 
+// ------------------------------->> SHOW POST
+
 router.post("/allPost", checkValidUser, function (req, res, next) {
   Post.find({})
     .populate("postedBy", "_id username")
@@ -14,6 +16,8 @@ router.post("/allPost", checkValidUser, function (req, res, next) {
       console.log(err);
     });
 });
+
+// ------------------------------->> SAVE IMAGE
 
 router.post("/createPost", checkValidUser, upload, function (req, res, next) {
   const { title, body } = req.body;
@@ -34,10 +38,15 @@ router.post("/createPost", checkValidUser, upload, function (req, res, next) {
   });
 
   post.save(function (err, data) {
-    if (err) throw err;
-    res.json({ post: data });
+    if (err) {
+      res.json({ error: err });
+    } else {
+      res.json({ post: data });
+    }
   });
 });
+
+// ------------------------------->> POST
 
 router.post("/myPosts", checkValidUser, function (req, res, next) {
   Post.find({ postedBy: req.user._id })
@@ -49,6 +58,8 @@ router.post("/myPosts", checkValidUser, function (req, res, next) {
       console.log(err);
     });
 });
+
+// ------------------------------->> LIKE FUNCTIONALITY
 
 router.put("/likes", checkValidUser, function (req, res, next) {
   Post.findByIdAndUpdate(
@@ -64,6 +75,48 @@ router.put("/likes", checkValidUser, function (req, res, next) {
       res.status(200).json({ result: data });
     }
   });
+});
+
+// ------------------------------->> UNLIKE FUNCTIONALITY
+
+router.put("/unlike", checkValidUser, function (req, res, next) {
+  Post.findByIdAndUpdate(
+    req.body.postId,
+    {
+      $pull: { likes: req.user._id },
+    },
+    { new: true }
+  ).exec((err, data) => {
+    if (err) {
+      res.status(422).json({ error: err });
+    } else {
+      res.status(200).json({ result: data });
+    }
+  });
+});
+
+// ------------------------------->> COMMENT FUNCTIONALITY
+
+router.put("/comment", checkValidUser, function (req, res, next) {
+  const comment = {
+    text: req.body.text,
+  };
+
+  Post.findByIdAndUpdate(
+    req.body.postId,
+    {
+      $push: { comments: comment },
+    },
+    { new: true }
+  )
+    .populate("comments.postedBy", "_id name")
+    .exec((err, data) => {
+      if (err) {
+        res.status(422).json({ error: err });
+      } else {
+        res.status(200).json({ result: data });
+      }
+    });
 });
 
 module.exports = router;
