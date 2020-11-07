@@ -9,6 +9,7 @@ const upload = require("../middleware/multer");
 router.post("/allPost", checkValidUser, function (req, res, next) {
   Post.find({})
     .populate("postedBy", "_id username")
+    .populate("comments.postedBy", "_id username")
     .then((posts) => {
       res.json(posts);
     })
@@ -51,6 +52,7 @@ router.post("/createPost", checkValidUser, upload, function (req, res, next) {
 router.post("/myPosts", checkValidUser, function (req, res, next) {
   Post.find({ postedBy: req.user._id })
     .populate("postedBy", "_id username")
+    .populate("comments.postedBy", "_id username")
     .then((posts) => {
       res.json(posts);
     })
@@ -100,6 +102,7 @@ router.put("/unlike", checkValidUser, function (req, res, next) {
 router.put("/comment", checkValidUser, function (req, res, next) {
   const comment = {
     text: req.body.text,
+    postedBy: req.user._id,
   };
 
   Post.findByIdAndUpdate(
@@ -109,7 +112,8 @@ router.put("/comment", checkValidUser, function (req, res, next) {
     },
     { new: true }
   )
-    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id username")
+    .populate("comments.postedBy", "_id username")
     .exec((err, data) => {
       if (err) {
         res.status(422).json({ error: err });

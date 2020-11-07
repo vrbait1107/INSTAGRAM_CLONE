@@ -22,11 +22,28 @@ const Home = () => {
       });
   }, []);
 
-  const makeComment = (value, id) => {
-    axios.post({
+  const makeComment = (text, postId) => {
+    axios({
       url: "/comment",
-      method: "post",
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+      data: {
+        postId,
+        text,
+      },
+    }).then((result) => {
+      const newData = dataValue.map((item, index) => {
+        if (item._id === result._id) {
+          return result;
+        } else {
+          return item;
+        }
+      });
+      setDataValue(newData);
     });
+    document.getElementById(postId).reset();
   };
 
   return (
@@ -57,15 +74,37 @@ const Home = () => {
                     />
                   </Card.Body>
 
+                  <div className="d-flex ml-3 mb-3">
+                    <span className="ml-3">
+                      0 <i className="fas  text-primary fa-thumbs-up fa-1x"></i>
+                    </span>
+                    <span className="ml-2">
+                      0{" "}
+                      <i className="fas text-secondary fa-thumbs-down fa-1x"></i>
+                    </span>
+                  </div>
+
                   <div className="ml-3 mb-3">
                     <h6>{item.title}</h6>
                     <p>{item.body}</p>
+
+                    {item.comments.map((item) => {
+                      return (
+                        <p>
+                          <b>{item.postedBy.username}</b> {item.text}
+                        </p>
+                      );
+                    })}
 
                     <a href="#">View All Comments</a>
                   </div>
 
                   <Form
-                    onSubmit={(e) => makeComment(e.target[0].value, item._id)}
+                    id={item._id}
+                    onSubmit={(e) => {
+                      makeComment(e.target[0].value, item._id);
+                      e.preventDefault();
+                    }}
                   >
                     <input
                       type="text"
