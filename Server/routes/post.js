@@ -123,4 +123,27 @@ router.put("/comment", checkValidUser, function (req, res, next) {
     });
 });
 
+// ----------------------------->> DELETE OPERATION
+
+router.delete("/deletePost/:postId", checkValidUser, (req, res) => {
+  Post.findById({ _id: req.params.postId })
+    .populate("postedBy", "_id")
+    .exec((err, post) => {
+      if (err) {
+        return res.status(422).json({ error: err });
+      } else {
+        if (post.postedBy._id.toString() === req.user._id.toString()) {
+          post
+            .remove()
+            .then((result) => {
+              res.status(200).json({ result });
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      }
+    });
+});
+
 module.exports = router;

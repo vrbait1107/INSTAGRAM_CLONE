@@ -46,6 +46,25 @@ const Home = () => {
     document.getElementById(postId).reset();
   };
 
+  const deletePost = (postId) => {
+    axios({
+      url: `/deletePost/${postId}`,
+      method: "delete",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    })
+      .then((result) => {
+        const newData = dataValue.filter((item) => {
+          return item._id !== result._id;
+        });
+        setDataValue(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Container>
       <Row>
@@ -63,6 +82,16 @@ const Home = () => {
                         style={{ maxHeight: 50 }}
                       />
                       {item.postedBy.username}
+
+                      {item.postedBy._id ==
+                        JSON.parse(localStorage.getItem("user"))._id && (
+                        <span
+                          className="ml-3 float-right"
+                          onClick={() => deletePost(item._id)}
+                        >
+                          <i className="fas text-danger fa-trash-alt fa-1x"></i>
+                        </span>
+                      )}
                     </h5>
                   </Card.Header>
 
