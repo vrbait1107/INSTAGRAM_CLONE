@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import axios from "axios";
+import { UserContext } from "../App";
 
 const Home = () => {
   const [dataValue, setDataValue] = useState([]);
-  const [tpValue, setTpValue] = useState(100);
+  const { state, dispatch } = useContext(UserContext);
 
   useEffect(() => {
     axios({
@@ -89,6 +90,50 @@ const Home = () => {
       });
   };
 
+  const makeLike = (postId) => {
+    axios({
+      url: "/likes",
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+      data: {
+        postId,
+      },
+    }).then((result) => {
+      const newData = dataValue.map((item, index) => {
+        if (item._id === result._id) {
+          return result;
+        } else {
+          return item;
+        }
+      });
+      setDataValue(newData);
+    });
+  };
+
+  const deleteLike = (postId) => {
+    axios({
+      url: "/unlike",
+      method: "put",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+      data: {
+        postId,
+      },
+    }).then((result) => {
+      const newData = dataValue.map((item, index) => {
+        if (item._id === result._id) {
+          return result;
+        } else {
+          return item;
+        }
+      });
+      setDataValue(newData);
+    });
+  };
+
   return (
     <Container>
       <Row>
@@ -127,14 +172,24 @@ const Home = () => {
                 </Card.Body>
 
                 <div className="d-flex ml-3 mb-3">
-                  <span className="ml-3">
-                    0 <i className="fas  text-primary fa-thumbs-up fa-1x"></i>
-                  </span>
-                  <span className="ml-2">
-                    0{" "}
-                    <i className="fas text-secondary fa-thumbs-down fa-1x"></i>
-                  </span>
+                  {item.likes.includes(state._id) ? (
+                    <span className="ml-2">
+                      <i
+                        className="fas text-secondary fa-thumbs-down fa-2x"
+                        onClick={() => deleteLike(item._id)}
+                      ></i>
+                    </span>
+                  ) : (
+                    <span className="ml-3">
+                      <i
+                        className="fas  text-primary fa-thumbs-up fa-2x"
+                        onClick={() => makeLike(item._id)}
+                      ></i>
+                    </span>
+                  )}
                 </div>
+
+                <p className="ml-3">{item.likes.length} Likes</p>
 
                 <div className="ml-3 mb-3">
                   <h6>{item.title}</h6>
