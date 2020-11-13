@@ -123,7 +123,28 @@ router.put("/comment", checkValidUser, function (req, res, next) {
     });
 });
 
-// ----------------------------->> DELETE OPERATION
+// ------------------------------->> COMMENT FUNCTIONALITY
+
+router.put("/uncomment", checkValidUser, function (req, res, next) {
+  Post.findByIdAndUpdate(
+    req.body.postId,
+    {
+      $pull: { comments: { _id: req.body.commentId } },
+    },
+    { new: true }
+  )
+    .populate("postedBy", "_id username")
+    .populate("comments.postedBy", "_id username")
+    .exec((err, data) => {
+      if (err) {
+        res.status(422).json({ error: err });
+      } else {
+        res.status(200).json({ result: data });
+      }
+    });
+});
+
+// ----------------------------->> DELETE POST OPERATION
 
 router.delete("/deletePost/:postId", checkValidUser, (req, res) => {
   Post.findById({ _id: req.params.postId })
