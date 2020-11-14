@@ -198,7 +198,7 @@ const Home = () => {
                   {item.comments.map((item1) => {
                     const deleteCommentDisplay = () => {
                       if (
-                        item1.postedBy._id ==
+                        item1.postedBy._id ===
                         JSON.parse(localStorage.getItem("user"))._id
                       ) {
                         return (
@@ -213,7 +213,7 @@ const Home = () => {
                     };
 
                     return (
-                      <p>
+                      <p key={item1._id}>
                         <b>{item1.postedBy.username}</b> {item1.text}
                         <span>{deleteCommentDisplay()}</span>
                       </p>
