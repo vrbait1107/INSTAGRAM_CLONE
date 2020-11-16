@@ -58,7 +58,7 @@ const UserProfile = () => {
 
           <div className="mt-3">
             <h5> {userProfile && userProfile.user.name}</h5>
-            <h6>Web & Mobile App Developer</h6>
+            <h6>{userProfile && userProfile.user.about}</h6>
           </div>
         </Col>
       </Row>

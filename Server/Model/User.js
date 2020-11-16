@@ -18,6 +18,11 @@ const User = new Schema({
     required: true,
   },
 
+  about: {
+    type: String,
+    default: "I am Instagram User",
+  },
+
   password: {
     type: String,
     required: true,

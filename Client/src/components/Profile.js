@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
+import { UserContext } from "../App";
 
 const Profile = () => {
   const [pics, setPics] = useState([]);
+  const { state, dispatch } = useContext(UserContext);
+
   useEffect(() => {
     axios({
       url: "/myPosts",
@@ -35,7 +38,8 @@ const Profile = () => {
         <Col md={5}>
           <div>
             <h3>
-              vrbait1107
+              {state && state.username}
+              {console.log(state)}
               <Button className="mx-3" variant="primary">
                 Follow
               </Button>
@@ -44,15 +48,15 @@ const Profile = () => {
 
           <div className="mt-3">
             <h6>
-              <span className="mr-3">1 Post</span>
+              <span className="mr-3">{pics && pics.length} Post</span>
               <span className="mx-3">285 Followers</span>
               <span className="mx-3">300 Following</span>
             </h6>
           </div>
 
           <div className="mt-3">
-            <h5>Vishal Bait</h5>
-            <h6>Web & Mobile App Developer</h6>
+            <h5> {state && state.name}</h5>
+            <h6>{state && state.about}</h6>
           </div>
         </Col>
       </Row>
@@ -60,7 +64,7 @@ const Profile = () => {
       <Row className="mt-5">
         {pics.map((item) => {
           return (
-            <Col md={4}>
+            <Col md={4} className="mb-5">
               <img
                 src={process.env.PUBLIC_URL + `/uploads/${item.photo}`}
                 alt={item._id}
