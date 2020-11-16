@@ -3,6 +3,7 @@ import Profile from "./components/Profile";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
+import UserProfile from "./components/UserProfile";
 import "./App.scss";
 import NavBar from "./components/NavBar";
 import CreatePost from "./components/CreatePost";
@@ -30,9 +31,9 @@ const Routing = () => {
       <Route path="/" exact component={Home} />
       <Route path="/Login" component={Login} />
       <Route path="/Register" component={Register} />
-      <Route path="/Profile" component={Profile} />
+      <Route path="/Profile" exact component={Profile} />
       <Route path="/CreatePost" component={CreatePost} />
-      <Profile />
+      <Route path="/Profile/:userId" component={UserProfile} />
     </Switch>
   );
 };

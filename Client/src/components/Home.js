@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Container, Row, Col, Card, Form } from "react-bootstrap";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { UserContext } from "../App";
 
 const Home = () => {
@@ -149,7 +150,10 @@ const Home = () => {
                       alt="Profile Image"
                       style={{ maxHeight: 50 }}
                     />
-                    {item.postedBy.username}
+
+                    <Link to={`/Profile/${item.postedBy._id}`}>
+                      {item.postedBy.username}{" "}
+                    </Link>
 
                     {item.postedBy._id ==
                       JSON.parse(localStorage.getItem("user"))._id && (
