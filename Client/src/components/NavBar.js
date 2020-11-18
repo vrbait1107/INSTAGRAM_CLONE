@@ -18,7 +18,11 @@ const NavBar = () => {
           Create Post
         </Link>,
 
-        <Link key="profile" className="font-nav mx-3 text-dark" to="/Profile">
+        <Link
+          key="profile"
+          className="font-nav mx-3 text-dark"
+          to={`/Profile/${state._id}`}
+        >
           Profile
         </Link>,
 

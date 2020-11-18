@@ -151,7 +151,7 @@ const Home = () => {
                       style={{ maxHeight: 50 }}
                     />
 
-                    <Link to={`/Profile/${item.postedBy._id}`}>
+                    <Link to={`/Profile/${item.postedBy.username}`}>
                       {item.postedBy.username}{" "}
                     </Link>
 

@@ -5,17 +5,18 @@ import axios from "axios";
 
 const UserProfile = () => {
   const [userProfile, setProfile] = useState(null);
-  const { userId } = useParams();
+  const { username } = useParams();
 
   useEffect(() => {
     axios({
-      url: `/profile/${userId}`,
+      url: `/profile/${username}`,
       method: "get",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
     })
       .then((data) => {
+        console.log(username);
         console.log(data.data);
         setProfile(data.data);
       })
@@ -27,7 +28,6 @@ const UserProfile = () => {
   return (
     <Container className="mt-5">
       <Row>
-        {console.log(userProfile)}
         <Col md={{ span: 3, offset: 2 }}>
           <img
             src="https://raw.githubusercontent.com/vrbait1107/vrbait1107.github.io/master/images/Vishal%20Bait.jpg"

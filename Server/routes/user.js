@@ -4,11 +4,11 @@ const Post = require("../Model/Post");
 const User = require("../Model/User");
 const checkValidUser = require("../middleware/checkValidUser");
 
-router.get("/profile/:id", checkValidUser, (req, res, next) => {
-  User.findOne({ _id: req.params.id })
+router.get("/profile/:username", (req, res, next) => {
+  User.findOne({ username: req.params.username })
     .select("-password")
     .then((user) => {
-      Post.find({ postedBy: req.params.id })
+      Post.find({ postedBy: user._id })
         .populate("postedBy", "_id username")
         .exec((err, posts) => {
           if (err) {
