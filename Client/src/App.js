@@ -31,7 +31,6 @@ const Routing = () => {
       <Route path="/" exact component={Home} />
       <Route path="/Login" component={Login} />
       <Route path="/Register" component={Register} />
-      <Route path="/Profile" exact component={Profile} />
       <Route path="/CreatePost" component={CreatePost} />
       <Route path="/Profile/:username" component={UserProfile} />
     </Switch>

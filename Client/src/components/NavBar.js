@@ -21,7 +21,7 @@ const NavBar = () => {
         <Link
           key="profile"
           className="font-nav mx-3 text-dark"
-          to={`/Profile/${state._id}`}
+          to={`/Profile/${state.username}`}
         >
           Profile
         </Link>,
