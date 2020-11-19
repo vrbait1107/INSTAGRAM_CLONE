@@ -23,6 +23,20 @@ const User = new Schema({
     default: "I am Instagram User",
   },
 
+  followers: [
+    {
+      type: ObjectId,
+      ref: "User",
+    },
+  ],
+
+  following: [
+    {
+      type: ObjectId,
+      ref: "User",
+    },
+  ],
+
   password: {
     type: String,
     required: true,

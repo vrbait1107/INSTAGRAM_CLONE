@@ -1,5 +1,4 @@
 import React, { createContext, useReducer, useEffect, useContext } from "react";
-import Profile from "./components/Profile";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";

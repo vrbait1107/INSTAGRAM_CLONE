@@ -4,7 +4,7 @@ const Post = require("../Model/Post");
 const User = require("../Model/User");
 const checkValidUser = require("../middleware/checkValidUser");
 
-router.get("/profile/:username", (req, res, next) => {
+router.get("/profile/:username", checkValidUser, (req, res, next) => {
   User.findOne({ username: req.params.username })
     .select("-password")
     .then((user) => {
