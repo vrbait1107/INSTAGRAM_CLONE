@@ -18,6 +18,20 @@ router.post("/allPost", checkValidUser, function (req, res, next) {
     });
 });
 
+// ------------------------------->> SHOW POST
+
+router.post("/subPost", checkValidUser, function (req, res, next) {
+  Post.find({ postedBy: { $in: req.user.following } })
+    .populate("postedBy", "_id username")
+    .populate("comments.postedBy", "_id username")
+    .then((posts) => {
+      res.json(posts);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 // ------------------------------->> SAVE IMAGE
 
 router.post("/createPost", checkValidUser, upload, function (req, res, next) {
@@ -45,20 +59,6 @@ router.post("/createPost", checkValidUser, upload, function (req, res, next) {
       res.json({ post: data });
     }
   });
-});
-
-// ------------------------------->> POST
-
-router.post("/myPosts", checkValidUser, function (req, res, next) {
-  Post.find({ postedBy: req.user._id })
-    .populate("postedBy", "_id username")
-    .populate("comments.postedBy", "_id username")
-    .then((posts) => {
-      res.json(posts);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
 });
 
 // ------------------------------->> LIKE FUNCTIONALITY
