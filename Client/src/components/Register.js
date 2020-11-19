@@ -13,16 +13,23 @@ const Register = () => {
     conPassword: "",
   });
 
+  const [file, setFile] = useState(null);
+
   const postRegister = () => {
+    const dataValue = new FormData();
+    dataValue.append("username", data.username);
+    dataValue.append("name", data.name);
+    dataValue.append("email", data.email);
+    dataValue.append("password", data.password);
+    dataValue.append("conPassword", data.conPassword);
+    dataValue.append("file", file);
+
+    console.log(dataValue);
+
     axios({
       url: "/signup",
       method: "post",
-      data: {
-        name: data.name,
-        username: data.username,
-        password: data.password,
-        email: data.email,
-      },
+      data: dataValue,
     })
       .then((data) => {
         console.log(data);
@@ -94,6 +101,14 @@ const Register = () => {
                 onChange={(e) =>
                   setData({ ...data, conPassword: e.target.value })
                 }
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.File
+                label="Select Image"
+                name="file"
+                onChange={(e) => setFile(e.target.files[0])}
               />
             </Form.Group>
 

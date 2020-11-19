@@ -8,7 +8,7 @@ const upload = require("../middleware/multer");
 
 router.post("/allPost", checkValidUser, function (req, res, next) {
   Post.find({})
-    .populate("postedBy", "_id username")
+    .populate("postedBy", "_id username profileImage")
     .populate("comments.postedBy", "_id username")
     .then((posts) => {
       res.json(posts);
@@ -22,7 +22,7 @@ router.post("/allPost", checkValidUser, function (req, res, next) {
 
 router.post("/subPost", checkValidUser, function (req, res, next) {
   Post.find({ postedBy: { $in: req.user.following } })
-    .populate("postedBy", "_id username")
+    .populate("postedBy", "_id username profileImage")
     .populate("comments.postedBy", "_id username")
     .then((posts) => {
       res.json(posts);
@@ -112,7 +112,7 @@ router.put("/comment", checkValidUser, function (req, res, next) {
     },
     { new: true }
   )
-    .populate("postedBy", "_id username")
+    .populate("postedBy", "_id username profileImage")
     .populate("comments.postedBy", "_id username")
     .exec((err, data) => {
       if (err) {
@@ -133,7 +133,7 @@ router.put("/uncomment", checkValidUser, function (req, res, next) {
     },
     { new: true }
   )
-    .populate("postedBy", "_id username")
+    .populate("postedBy", "_id username profileImage")
     .populate("comments.postedBy", "_id username")
     .exec((err, data) => {
       if (err) {

@@ -152,9 +152,12 @@ const Home = () => {
                     <Card.Header>
                       <h5>
                         <img
-                          src="https://raw.githubusercontent.com/vrbait1107/vrbait1107.github.io/master/images/Vishal%20Bait.jpg"
+                          src={
+                            process.env.PUBLIC_URL +
+                            `/uploads/profileImages/${item.postedBy.profileImage}`
+                          }
                           className="img-fluid mr-4 rounded-circle"
-                          alt="Profile Image"
+                          alt="Profile"
                           style={{ maxHeight: 50 }}
                         />
 

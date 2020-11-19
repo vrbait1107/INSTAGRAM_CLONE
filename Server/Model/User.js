@@ -37,6 +37,11 @@ const User = new Schema({
     },
   ],
 
+  profileImage: {
+    type: String,
+    default: "defaultUser.png",
+  },
+
   password: {
     type: String,
     required: true,

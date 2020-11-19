@@ -108,7 +108,10 @@ const UserProfile = () => {
           <Row>
             <Col md={{ span: 3, offset: 2 }}>
               <img
-                src="https://raw.githubusercontent.com/vrbait1107/vrbait1107.github.io/master/images/Vishal%20Bait.jpg"
+                src={
+                  process.env.PUBLIC_URL +
+                  `/uploads/profileImages/${state.profileImage}`
+                }
                 className="img-fluid rounded-circle"
                 alt="Profile Image"
                 style={{ maxHeight: 200 }}

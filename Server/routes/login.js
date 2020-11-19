@@ -13,13 +13,31 @@ router.post("/login", function (req, res, next) {
 
     if (data) {
       let hashPassword = data.password;
-      const { _id, name, email, username, about, followers, following } = data;
+      const {
+        _id,
+        name,
+        email,
+        username,
+        about,
+        followers,
+        following,
+        profileImage,
+      } = data;
 
       if (bcrypt.compareSync(password, hashPassword)) {
         const token = jwt.sign({ _id: data._id }, jwtSecret);
         res.json({
           token,
-          user: { _id, name, username, email, about, followers, following },
+          user: {
+            _id,
+            name,
+            username,
+            email,
+            about,
+            followers,
+            following,
+            profileImage,
+          },
         });
       } else {
         res.status(422).json({ error: "Check Your Credentials" });

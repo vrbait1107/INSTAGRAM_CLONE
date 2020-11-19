@@ -3,11 +3,29 @@ const router = express.Router();
 const User = require("../Model/User");
 const bcrypt = require("bcryptjs");
 const checkUsername = require("../middleware/checkUsername");
+const multer = require("multer");
+const path = require("path");
 
-router.post("/signup", checkUsername, (req, res, next) => {
+const Storage = multer.diskStorage({
+  destination: `../Client/public/uploads/profileImages`,
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({
+  storage: Storage,
+}).single("file");
+
+router.post("/signup", upload, checkUsername, (req, res, next) => {
   let { username, email, name, password } = req.body;
 
-  if (!username || !email || !name || !password) {
+  let profileImage = req.file.filename;
+
+  if (!username || !email || !name || !password || !profileImage) {
     return res.status(422).json({ error: "Please fill all the field" });
   }
 
@@ -15,6 +33,7 @@ router.post("/signup", checkUsername, (req, res, next) => {
     username,
     email,
     name,
+    profileImage,
     password: bcrypt.hashSync(password, 10),
   });
 
