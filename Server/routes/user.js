@@ -3,6 +3,22 @@ const router = express.Router();
 const Post = require("../Model/Post");
 const User = require("../Model/User");
 const checkValidUser = require("../middleware/checkValidUser");
+const multer = require("multer");
+const path = require("path");
+
+const Storage = multer.diskStorage({
+  destination: `../Client/public/uploads/profileImages`,
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({
+  storage: Storage,
+}).single("file");
 
 router.get("/profile/:username", checkValidUser, (req, res, next) => {
   User.findOne({ username: req.params.username })
@@ -88,6 +104,18 @@ router.put("/unfollow", checkValidUser, (req, res, next) => {
         return res.status(422), json({ error: err });
       });
   });
+});
+
+router.put("/updateProfile", upload, (req, res, next) => {
+  User.findByIdAndUpdate(req.body._id, {
+    $set: { profileImage: req.file.filename },
+  })
+    .then((data) => {
+      res.status(200).json({ result: data });
+    })
+    .catch((err) => {
+      return res.status(422).json({ error: err });
+    });
 });
 
 module.exports = router;

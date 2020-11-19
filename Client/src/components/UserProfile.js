@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../App";
@@ -7,6 +7,7 @@ import Loader from "./Loader";
 
 const UserProfile = () => {
   const [userProfile, setProfile] = useState(null);
+  const [file, setFile] = useState(null);
   const { username } = useParams();
   const { state, dispatch } = useContext(UserContext);
 
@@ -27,6 +28,29 @@ const UserProfile = () => {
         console.log(err);
       });
   }, []);
+
+  const updateProfile = () => {
+    const dataValue = new FormData();
+    dataValue.append("file", file);
+    dataValue.append("_id", state._id);
+
+    axios({
+      url: "/updateProfile",
+      method: "put",
+      data: dataValue,
+    })
+      .then((data) => {
+        console.log(data);
+        if (data.error) {
+          alert("Something Went Wrong");
+        } else {
+          alert("Successful");
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
 
   const followUser = () => {
     axios({
@@ -110,12 +134,34 @@ const UserProfile = () => {
               <img
                 src={
                   process.env.PUBLIC_URL +
-                  `/uploads/profileImages/${state.profileImage}`
+                  `/uploads/profileImages/${userProfile.user.profileImage}`
                 }
                 className="img-fluid rounded-circle"
                 alt="Profile Image"
                 style={{ maxHeight: 200 }}
               />
+
+              {userProfile.user._id === state._id ? (
+                <>
+                  <Form.Group>
+                    <Form.File
+                      label="Select Image"
+                      name="file"
+                      onChange={(e) => setFile(e.target.files[0])}
+                    />
+                  </Form.Group>
+
+                  <Button
+                    variant="primary"
+                    className="mx-auto"
+                    onClick={() => updateProfile()}
+                  >
+                    Update Profile
+                  </Button>
+                </>
+              ) : (
+                " "
+              )}
             </Col>
             <Col md={5}>
               <div className="d-flex flex-row">
