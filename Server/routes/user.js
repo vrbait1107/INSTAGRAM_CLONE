@@ -30,18 +30,19 @@ router.put("/follow", checkValidUser, (req, res, next) => {
     User.findByIdAndUpdate(
       result._id,
       {
-        $push: { follower: req.user._id },
+        $push: { followers: req.user._id },
       },
-      { $new: true }
+      { new: true }
     )
       .then((result2) => {
         User.findByIdAndUpdate(
           req.user._id,
           {
-            $push: { follower: req.body.username },
+            $push: { following: result._id },
           },
-          { $new: true }
+          { new: true }
         )
+          .select("-password")
           .then((result3) => {
             res.status(200).json({ result: result3 });
           })
@@ -63,18 +64,19 @@ router.put("/unfollow", checkValidUser, (req, res, next) => {
     User.findByIdAndUpdate(
       result._id,
       {
-        $pull: { follower: req.user._id },
+        $pull: { followers: req.user._id },
       },
-      { $new: true }
+      { new: true }
     )
       .then((result2) => {
         User.findByIdAndUpdate(
           req.user._id,
           {
-            $pull: { follower: req.body.username },
+            $pull: { following: result._id },
           },
-          { $new: true }
+          { new: true }
         )
+          .select("-password")
           .then((result3) => {
             res.status(200).json({ result: result3 });
           })
