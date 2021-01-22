@@ -6,7 +6,7 @@ const upload = require("../middleware/multer");
 
 // ------------------------------->> SHOW POST
 
-router.post("/allPost", checkValidUser, function (req, res, next) {
+router.get("/allPost", checkValidUser, function (req, res, next) {
   Post.find({})
     .populate("postedBy", "_id username profileImage")
     .populate("comments.postedBy", "_id username")

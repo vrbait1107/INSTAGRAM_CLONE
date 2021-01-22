@@ -12,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     axios({
       url: "/allPost",
-      method: "post",
+      method: "get",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwt")}`,
       },
