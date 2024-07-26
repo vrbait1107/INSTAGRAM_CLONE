@@ -3,49 +3,46 @@ const router = express.Router();
 const User = require("../Model/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { jwtSecret } = require("./keys");
+const { HttpStatusCode } = require("axios");
+require('dotenv').config();
 
-router.post("/login", function (req, res, next) {
-  let { username, password } = req.body;
 
-  User.findOne({ username: username }, function (err, data) {
-    if (err) throw err;
+router.post("/login", async function (req, res, next) {
 
-    if (data) {
-      let hashPassword = data.password;
-      const {
-        _id,
-        name,
-        email,
-        username,
-        about,
-        followers,
-        following,
-        profileImage,
-      } = data;
+  console.log(process.env.JWT_SECRET_TOKEN);
 
-      if (bcrypt.compareSync(password, hashPassword)) {
-        const token = jwt.sign({ _id: data._id }, jwtSecret);
-        res.json({
-          token,
-          user: {
-            _id,
-            name,
-            username,
-            email,
-            about,
-            followers,
-            following,
-            profileImage,
-          },
-        });
-      } else {
-        res.status(422).json({ error: "Check Your Credentials" });
-      }
-    } else {
-      res.status(422).json({ error: "Check Your Credentials" });
+  const user = await User.findOne({ username: req.body.username });
+
+  if (!user) {
+    return res.status(HttpStatusCode.UnprocessableEntity).json({
+      status: false,
+      message: "Check Your Credentials"
+    });
+  }
+
+  const { _id, name, email, username, about, followers, following, profileImage } = user;
+  const isValid = await bcrypt.compare(req.body.password, user.password);
+
+  if (!isValid) {
+    return res.status(HttpStatusCode.UnprocessableEntity).json({
+      status: false,
+      message: "Check Your Credentials"
+    });
+  }
+
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET_TOKEN);
+
+  return res.status(HttpStatusCode.Ok).json({
+    status: true,
+    data: {
+      user:
+      {
+        _id, name, username, email, about, followers, following, profileImage
+      },
+      token
     }
   });
+
 });
 
 module.exports = router;
