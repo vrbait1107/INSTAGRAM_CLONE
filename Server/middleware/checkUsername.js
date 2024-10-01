@@ -1,15 +1,22 @@
+const { HttpStatusCode } = require("axios");
 const User = require("../Model/User");
-const checkUsername = (req, res, next) => {
-  let username = req.body.username;
+const responseUtils = require('../helpers/response');
 
-  User.findOne({ username: username }, function (err, data) {
-    if (err) throw err;
-    if (data) {
-      return res.json({ error: "Username Already Exist" });
-    } else {
-      next();
-    }
-  });
+const checkUsername = async (request, response, next) => {
+  const username = request.body.username;
+
+  const user = await User.findOne({ username: username });
+
+  if (user) {
+    return responseUtils.error(
+      response,
+      HttpStatusCode.Conflict,
+      "You need to be logged in to access this feature. Please log in to continue."
+    );
+  }
+
+  next();
+
 };
 
 module.exports = checkUsername;

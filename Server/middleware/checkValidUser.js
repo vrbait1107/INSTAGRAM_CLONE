@@ -1,27 +1,52 @@
 const jwt = require("jsonwebtoken");
 const User = require("../Model/User");
-const { jwtSecret } = require("../routes/keys");
+const responseUtils = require('../helpers/response');
+require('dotenv').config();
+const { HttpStatusCode } = require("axios");
 
-const checkValidUser = (req, res, next) => {
-  const { authorization } = req.headers;
+const checkValidUser = async (request, response, next) => {
+  const { authorization } = request.headers;
 
   if (!authorization) {
-    return res.status(401).json({ error: "You must logged in" });
+    return responseUtils.error(
+      response,
+      HttpStatusCode.Unauthorized,
+      "You need to be logged in to access this feature. Please log in to continue."
+    );
   }
 
-  const token = authorization.replace("Bearer ", "");
-  jwt.verify(token, jwtSecret, function (err, payload) {
-    if (err) {
-      return res.status(401).json({ error: "You must logged in" });
+  try {
+    const token = authorization.replace("Bearer ", "");
+    const data = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
+
+    if (!data) {
+      return responseUtils.error(
+        response,
+        HttpStatusCode.Unauthorized,
+        "You need to be logged in to access this feature. Please log in to continue."
+      );
     }
 
-    const { _id } = payload;
+    const user = await User.findById(data._id);
 
-    User.findById(_id).then((userdata) => {
-      req.user = userdata;
-      next();
-    });
-  });
+    if (!user) {
+      return responseUtils.error(
+        response,
+        HttpStatusCode.Unauthorized,
+        "You need to be logged in to access this feature. Please log in to continue."
+      );
+    }
+
+    request.user = user;
+    next();
+
+  } catch (error) {
+    return responseUtils.error(
+      response,
+      HttpStatusCode.InternalServerError,
+      "Something Went Wrong, Please Try Again Later"
+    );
+  }
 };
 
 module.exports = checkValidUser;
