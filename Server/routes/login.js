@@ -14,7 +14,7 @@ router.post("/login", async function (req, res, next) {
   const user = await User.findOne({ username: req.body.username });
 
   if (!user) {
-    return res.status(HttpStatusCode.UnprocessableEntity).json({
+    return res.status(HttpStatusCode.Unauthorized).json({
       status: false,
       message: "Check Your Credentials"
     });
@@ -24,7 +24,7 @@ router.post("/login", async function (req, res, next) {
   const isValid = await bcrypt.compare(req.body.password, user.password);
 
   if (!isValid) {
-    return res.status(HttpStatusCode.UnprocessableEntity).json({
+    return res.status(HttpStatusCode.Unauthorized).json({
       status: false,
       message: "Check Your Credentials"
     });
